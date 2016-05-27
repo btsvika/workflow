@@ -1,6 +1,13 @@
 /*
  --save-dev
  put in package.json the Dependencies under devDependencies
+
+ to see the gulp tool window in WebStorm do the following:
+ 1. run a couple of gulp tasks in the terminal
+ 2. Alt + F11 and choose the gulpfile.js file
+ 3. restart WebStorm
+ 4. Go to: View -> Tool Window -> Gulp
+
  */
 
 //npm install --save-dev gulp
@@ -50,10 +57,19 @@ gulp.task('compass', function () {
         .pipe(compass({
             sass: 'components/sass',
             image: 'builds/development/images',
-            style: 'expanded'
+            style: 'expanded',
+            comments: true,
+            lineNumbers: true
+
         })
             .on('error', gutil.log))
         .pipe(gulp.dest('builds/development/css'))
+});
+
+gulp.task('watch', function () {
+    gulp.watch(coffeeSources, ['coffee']),
+    gulp.watch(jsSources, ['js']),
+    gulp.watch('components/sass/*.scss', ['compass'])
 });
 
 //https://github.com/gulpjs/gulp/blob/master/docs/API.md
