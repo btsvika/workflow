@@ -5,7 +5,7 @@
     display: block;
     float: left;
     img {
-      @include border-radius(none);
+      @include border-radius(0);
     }
   } //item
 
@@ -19,7 +19,7 @@
       display: block;
       border: 1px solid #FCF4DC;
       margin: 0;
-      @include border-radius(none);
+      @include border-radius(0);
       @include box-shadow(black 5px 5px 12px);
     }
   } //preview
