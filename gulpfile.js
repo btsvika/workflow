@@ -73,4 +73,4 @@ gulp.task('watch', function () {
 });
 
 //https://github.com/gulpjs/gulp/blob/master/docs/API.md
-gulp.task('default', ['coffee', 'js', 'compass']);
+gulp.task('default', ['coffee', 'js', 'compass', 'watch']);
