@@ -46,7 +46,8 @@ var env,
     sassStyleComments;
 
 env = process.env.NODE_ENV || 'development';
-//env = 'production';
+//NOTE: in windows, in order to run as production -> in the terminal write: set NODE_ENV=development
+//and than run gulp
 
 if (env==='development') {
     outputDir = 'builds/development/';
