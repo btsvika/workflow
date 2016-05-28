@@ -22,6 +22,8 @@ var gulp = require('gulp'),
     browserify = require('gulp-browserify'),
 //npm install --save-dev gulp-compass
     compass = require('gulp-compass'),
+//npm install --save-dev gulp-connect
+    connect = require('gulp-connect'),
 //npm install --save-dev gulp-concat
     concat = require('gulp-concat');
 
@@ -49,6 +51,7 @@ gulp.task('js', function () {
         .pipe(browserify())
         //browserify() added the first line in scripts.js and jquery + mustache
         .pipe(gulp.dest('builds/development/js'))
+        .pipe(connect.reload())
 });
 
 //https://www.npmjs.com/package/gulp-compass
@@ -64,6 +67,7 @@ gulp.task('compass', function () {
         })
             .on('error', gutil.log))
         .pipe(gulp.dest('builds/development/css'))
+        .pipe(connect.reload())
 });
 
 gulp.task('watch', function () {
@@ -72,5 +76,12 @@ gulp.task('watch', function () {
     gulp.watch('components/sass/*.scss', ['compass'])
 });
 
+gulp.task('connect', function () {
+    connect.server({
+        root: 'builds/development/',
+        livereload: true
+    })
+});
+
 //https://github.com/gulpjs/gulp/blob/master/docs/API.md
-gulp.task('default', ['coffee', 'js', 'compass', 'watch']);
+gulp.task('default', ['coffee', 'js', 'compass', 'connect', 'watch']);
