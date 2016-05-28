@@ -30,6 +30,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
 //npm install --save-dev gulp-minify-html
     minifyHTML = require('gulp-minify-html'),
+//npm install --save-dev gulp-jsonminify
+    jsonminify = require('gulp-jsonminify');
 //npm install --save-dev gulp-concat
     concat = require('gulp-concat');
 
@@ -105,7 +107,7 @@ gulp.task('watch', function () {
     gulp.watch(jsSources, ['js']);
     gulp.watch('components/sass/*.scss', ['compass']);
     gulp.watch('builds/development/*.html', ['html']);
-    gulp.watch(jsonSources, ['json']);
+    gulp.watch('builds/development/js/*.json', ['json']);
 });
 
 gulp.task('connect', function () {
@@ -123,7 +125,9 @@ gulp.task('html', function () {
 });
 
 gulp.task('json', function () {
-    gulp.src(jsonSources)
+    gulp.src('builds/development/js/*.json')
+        .pipe(gulpif(env === 'production', jsonminify()))
+        .pipe(gulpif(env === 'production', gulp.dest('builds/production/js')))
         .pipe(connect.reload())
 });
 
