@@ -27,18 +27,39 @@ var gulp = require('gulp'),
 //npm install --save-dev gulp-concat
     concat = require('gulp-concat');
 
-var coffeeSources = ['components/coffee/tagline.coffee'];
-//var coffeeSources = ['components/coffee/*.coffee'] - for all the files
-var jsSources = [
+var env,
+    coffeeSources,
+    jsSources,
+    sassSources,
+    htmlSources,
+    jsonSources,
+    outputDir,
+    sassStyle,
+    sassStyleComments;
+
+env = process.env.NODE_ENV || 'development';
+//env = process.env.NODE_ENV || 'production';
+
+if (env==='development') {
+    outputDir = 'builds/development/';
+    sassStyle = 'expended';
+    sassStyleComments = true;
+} else {
+    outputDir = 'builds/production/';
+    sassStyle = 'compressed';
+    sassStyleComments = false;
+}
+
+coffeeSources = ['components/coffee/tagline.coffee'];
+jsSources = [
     'components/scripts/rclick.js',
     'components/scripts/pixgrid.js',
     'components/scripts/tagline.js',
     'components/scripts/template.js'
 ];
-var sassSources = ['components/sass/style.scss'];
-var htmlSources = ['builds/development/*.html'];
-var jsonSources = ['builds/development/js/*.json'];
-
+sassSources = ['components/sass/style.scss'];
+htmlSources = [outputDir + '*.html'];
+jsonSources = [outputDir + 'js/*.json'];
 
 gulp.task('coffee', function () {
     gulp.src(coffeeSources)
@@ -52,7 +73,7 @@ gulp.task('js', function () {
         .pipe(concat('script.js'))
         .pipe(browserify())
         //browserify() added the first line in scripts.js and jquery + mustache
-        .pipe(gulp.dest('builds/development/js'))
+        .pipe(gulp.dest(outputDir + 'js'))
         .pipe(connect.reload())
 });
 
@@ -61,14 +82,14 @@ gulp.task('compass', function () {
     gulp.src(sassSources)
         .pipe(compass({
             sass: 'components/sass',
-            image: 'builds/development/images',
-            style: 'expanded',
-            comments: true,
-            lineNumbers: true
+            image: outputDir + 'images',
+            style: sassStyle,
+            comments: sassStyleComments,
+            lineNumbers: sassStyleComments
 
         })
             .on('error', gutil.log))
-        .pipe(gulp.dest('builds/development/css'))
+        .pipe(gulp.dest(outputDir + 'css'))
         .pipe(connect.reload())
 });
 
@@ -82,7 +103,7 @@ gulp.task('watch', function () {
 
 gulp.task('connect', function () {
     connect.server({
-        root: 'builds/development/',
+        root: outputDir,
         livereload: true
     })
 });
@@ -98,4 +119,4 @@ gulp.task('json', function () {
 });
 
 //https://github.com/gulpjs/gulp/blob/master/docs/API.md
-gulp.task('default', ['html', 'json', 'coffee', 'js', 'compass', 'connect', 'watch']);
+gulp.task('default', ['html', 'json', 'coffee', 'js', 'compass', 'watch']);
