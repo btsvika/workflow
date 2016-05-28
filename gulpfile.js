@@ -24,6 +24,10 @@ var gulp = require('gulp'),
     compass = require('gulp-compass'),
 //npm install --save-dev gulp-connect
     connect = require('gulp-connect'),
+//npm install --save-dev gulp-if
+    gulpif = require('gulp-if'),
+//npm install --save-dev gulp-uglify
+    uglify = require('gulp-uglify'),
 //npm install --save-dev gulp-concat
     concat = require('gulp-concat');
 
@@ -38,7 +42,7 @@ var env,
     sassStyleComments;
 
 env = process.env.NODE_ENV || 'development';
-//env = process.env.NODE_ENV || 'production';
+//env = 'production';
 
 if (env==='development') {
     outputDir = 'builds/development/';
@@ -72,6 +76,7 @@ gulp.task('js', function () {
     gulp.src(jsSources)
         .pipe(concat('script.js'))
         .pipe(browserify())
+        .pipe(gulpif(env === 'production', uglify()))
         //browserify() added the first line in scripts.js and jquery + mustache
         .pipe(gulp.dest(outputDir + 'js'))
         .pipe(connect.reload())
