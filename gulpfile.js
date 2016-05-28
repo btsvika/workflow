@@ -9,6 +9,19 @@
  4. Go to: View -> Tool Window -> Gulp
 
  */
+/*
+* setting the project in a new folder
+  * 1. go to the github and copy the git url (for example: https://github.com/btsvika/workflow.git)
+  * 2. open git bash
+  * 3. write cd PATH_TO_THE_FOLDER that you want the project to be in
+  * 4. write git clone https://github.com/btsvika/workflow.git
+  * 5. open the project with WebStorm
+  * 6. open terminal of WebStorm and write npm install
+  * 7. copy the images folder to the development and production folders
+  * 8. run gulp :)
+* */
+
+
 
 //npm install --save-dev gulp
 var gulp = require('gulp'),
@@ -133,4 +146,4 @@ gulp.task('json', function () {
 });
 
 //https://github.com/gulpjs/gulp/blob/master/docs/API.md
-gulp.task('default', ['html', 'json', 'coffee', 'js', 'compass', 'watch']);
+gulp.task('default', ['html', 'json', 'coffee', 'js', 'compass', 'connect', 'watch']);
